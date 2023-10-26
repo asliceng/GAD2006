@@ -35,36 +35,23 @@ void ACOAAvatar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	/*UpdateMovementParams(Stamina);
-	if (!bRunning)
-	{
-		Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
-	}
-	else if (!bStaminaDrained && GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
-	{
-		Stamina = FMath::Max(0, Stamina - StaminaDrainRate * DeltaTime);
-	}*/
-
 	if (GetCharacterMovement() -> MovementMode == EMovementMode::MOVE_Walking)
 	{
-		if (bRunning && !bStaminaDrained)
-		{
-			if (!GetCharacterMovement()->Velocity.IsNearlyZero(0.01f))
-			{
-				Stamina = FMath::Max(0, Stamina - StaminaDrainRate * DeltaTime);
-				if (Stamina == 0)
-				{
-					bStaminaDrained = true;
-					UpdateMovementParams();
-				}
-			}			
-		}
-		else
+		if (!bRunning || bStaminaDrained)
 		{
 			Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
 			if (Stamina >= MaxStamina)
 			{
 				bStaminaDrained = false;
+				UpdateMovementParams();
+			}
+		}
+		else if (!GetCharacterMovement()->Velocity.IsNearlyZero(0.01f))
+		{
+			Stamina = FMath::Max(0, Stamina - StaminaDrainRate * DeltaTime);
+			if (Stamina == 0)
+			{
+				bStaminaDrained = true;
 				UpdateMovementParams();
 			}
 		}
@@ -108,19 +95,12 @@ void ACOAAvatar::MoveRight(float Amount)
 
 void ACOAAvatar::RunPressed()
 {
-	/*if (!bStaminaDrained)
-	{
-		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
-		bRunning = true;
-	}*/
 	bRunning = true;
 	UpdateMovementParams();
 }
 
 void ACOAAvatar::RunReleased()
 {
-	/*GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
-	bRunning = false;*/
 	bRunning = false;
 	UpdateMovementParams();
 }
@@ -130,16 +110,3 @@ void ACOAAvatar::UpdateMovementParams()
 	GetCharacterMovement()->MaxWalkSpeed =
 		bRunning && !bStaminaDrained ? RunningSpeed : WalkingSpeed;
 }
-
-//void ACOAAvatar::UpdateMovementParams(float CurrentStamina)
-//{
-//	if (bStaminaDrained && Stamina == MaxStamina)
-//	{
-//		bStaminaDrained = false;
-//	}
-//	else if (!bStaminaDrained && CurrentStamina == 0)
-//	{
-//		bStaminaDrained = true;
-//		RunReleased();
-//	}
-//}

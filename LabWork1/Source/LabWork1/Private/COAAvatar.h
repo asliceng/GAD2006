@@ -64,7 +64,6 @@ private:
 	void RunPressed();
 	void RunReleased();
 
-	//void UpdateMovementParams(float CurrentStamina);
 	void UpdateMovementParams();
 	
 };
