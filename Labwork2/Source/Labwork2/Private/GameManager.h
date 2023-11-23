@@ -54,7 +54,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	AGameGrid* GameGrid;
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable)
 	bool UndoLastMove();
 
 protected:

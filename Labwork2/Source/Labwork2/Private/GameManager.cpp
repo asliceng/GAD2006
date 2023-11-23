@@ -38,36 +38,6 @@ void AGameManager::OnActorClicked(AActor* Actor, FKey button)
 	}
 }
 
-void AGameManager::OnBackspaceClicked(AActor* Actor, FKey button)
-{
-
-	if (!ThePlayer)
-	{
-		UE_LOG(LogTemp, Error, TEXT("No Player Unit Detected!"));
-	}
-
-	if (UndoLastMove())
-	{
-		TSharedPtr<Command> LastMove = CommandPool.Pop();
-
-		TSharedPtr<MoveCommand> LastMoveAsMoveCommand = StaticCastSharedPtr<MoveCommand>(LastMove);
-
-		if (LastMoveAsMoveCommand.IsValid())
-		{
-			TSharedRef<MoveCommand> Cmd =
-				MakeShared<MoveCommand>(ThePlayer->Slot->GridPosition, LastMoveAsMoveCommand->Source);
-			Cmd->Revert();
-
-			CurrentCommand = Cmd;
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("YOU ARE ON THE BEGINNING POSITION!!!"));
-	}
-	
-}
-
 void AGameManager::CreateLevelActors(FSLevelInfo& Info)
 {
 	ThePlayer = nullptr;
@@ -90,12 +60,14 @@ bool AGameManager::UndoLastMove()
 {	
 	if (CommandPool.IsEmpty())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("You are on the beginning!"));
 		return false;
 	}
-	else
-	{
-		return true;
-	}
+
+	TSharedRef<Command> Cmd = CommandPool.Pop();
+	Cmd->Revert();
+	CurrentCommand = Cmd;
+	return true;
 }
 
 // Called when the game starts or when spawned

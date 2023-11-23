@@ -30,12 +30,13 @@ void MoveCommand::Execute()
 
 void MoveCommand::Revert()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Reverting MoveCommand..."));
 	AGameSlot* SlotA = AGameGrid::FindSlot(Source);
 	AGameSlot* SlotB = AGameGrid::FindSlot(Destination);
 
-	AUnitBase* UnitA = SlotA->Unit;
+	AUnitBase* UnitA = SlotB->Unit;
 	check(UnitA);
-	UnitA->AssignToSlot(SlotB);
-	SlotA->SetState(GS_Default);
+	UnitA->AssignToSlot(SlotA);
+	SlotB->SetState(GS_Default);
 }
 

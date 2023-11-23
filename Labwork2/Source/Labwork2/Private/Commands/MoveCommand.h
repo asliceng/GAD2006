@@ -14,10 +14,9 @@ public:
 	MoveCommand(FSGridPosition Src, FSGridPosition Dst);
 	~MoveCommand();
 	virtual void Execute() override;
-
 	virtual void Revert() override;
 
 
-public:
+private:
 	FSGridPosition Source, Destination;
 };
