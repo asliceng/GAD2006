@@ -3,6 +3,7 @@
 
 #include "NetGameInstance.h"
 #include "NetBaseCharacter.h"
+#include "NetAvatar.h"
 
 static UDataTable* SBodyParts = nullptr;
 
