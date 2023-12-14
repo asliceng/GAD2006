@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "NetBaseCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "NetAvatar.generated.h"
 
@@ -33,11 +34,7 @@ private:
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
 
-	UPROPERTY()
-	float RunningSpeed;
 	
-	UPROPERTY()
-	float WalkingSpeed;
 
 	UFUNCTION()
 	void StartRunning();
@@ -46,13 +43,23 @@ private:
 	void StopRunning();
 
 	UPROPERTY()
-	bool bIsRunning;
+	float RunningSpeed;
+
+	UPROPERTY()
+	float WalkingSpeed;
+
+	UPROPERTY(ReplicatedUsing = OnRep_IsRunning)
+	float CurrentSpeed;
+
 
 	UFUNCTION(Server, Reliable)
 	void ServerStartRunning();
 
 	UFUNCTION(Server, Reliable)
 	void ServerStopRunning();
+
+	UPROPERTY()
+	bool bIsRunning;
 
 	UFUNCTION()
 	void OnRep_IsRunning();
