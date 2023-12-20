@@ -34,7 +34,6 @@ private:
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
 
-	
 
 	UFUNCTION()
 	void StartRunning();
@@ -48,17 +47,13 @@ private:
 	UPROPERTY()
 	float WalkingSpeed;
 
-	UPROPERTY(ReplicatedUsing = OnRep_IsRunning)
-	float CurrentSpeed;
-
-
 	UFUNCTION(Server, Reliable)
 	void ServerStartRunning();
 
 	UFUNCTION(Server, Reliable)
 	void ServerStopRunning();
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_IsRunning)
 	bool bIsRunning;
 
 	UFUNCTION()

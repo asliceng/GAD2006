@@ -29,7 +29,7 @@ void ANetAvatar::BeginPlay()
 void ANetAvatar::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ANetAvatar, CurrentSpeed);
+	DOREPLIFETIME(ANetAvatar, bIsRunning);
 }
 
 void ANetAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -104,14 +104,12 @@ void ANetAvatar::OnRep_IsRunning()
 {
 	if (bIsRunning)
 	{
-		CurrentSpeed = RunningSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 	}
 	else
 	{
-		CurrentSpeed = WalkingSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
 	}
-
-	GetCharacterMovement()->MaxWalkSpeed = CurrentSpeed;
 }
 
 
