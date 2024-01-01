@@ -7,7 +7,8 @@
 ANetAvatar::ANetAvatar():
 	RunningSpeed(6000.0f),
 	WalkingSpeed(30.0f),
-	bIsRunning(false)
+	bIsRunning(false),
+	MovementScale(1.0f)
 {
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
@@ -53,7 +54,8 @@ void ANetAvatar::MoveForward(float Scale)
 	FRotator Rotation = GetController()->GetControlRotation();
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	AddMovementInput(ForwardDirection, Scale);
+	AddMovementInput(ForwardDirection, MovementScale * Scale);
+
 }
 
 void ANetAvatar::MoveRight(float Scale)
@@ -61,7 +63,7 @@ void ANetAvatar::MoveRight(float Scale)
 	FRotator Rotation = GetController()->GetControlRotation();
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	AddMovementInput(ForwardDirection, Scale);
+	AddMovementInput(ForwardDirection, MovementScale * Scale);
 }
 
 void ANetAvatar::StartRunning()
