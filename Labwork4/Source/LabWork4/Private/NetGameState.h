@@ -37,4 +37,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	ANetPlayerState* GetPlayerStateByIndex(int PlayerIndex);
+
+	UPROPERTY(BlueprintReadOnly)
+	float GameTimer;
+
 };

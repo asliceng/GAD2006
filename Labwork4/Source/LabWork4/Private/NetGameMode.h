@@ -19,6 +19,8 @@ public:
 
 	ANetGameMode();
 
+	void BeginPlay();
+
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
 	UFUNCTION(BlueprintCallable)
@@ -26,6 +28,17 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EndGame();
+
+	FTimerHandle TimerHandle_GameTimer;
+
+	void StartGameTimer();
+
+	void UpdateGameTimer();
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateTimerDisplay(float RemainingTime);
+
+	void CheckGameResult();
 
 private:
 	int TotalPlayerCount;
