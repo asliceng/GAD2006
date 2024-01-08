@@ -5,7 +5,8 @@
 
 ANetGameState::ANetGameState() :
 	WinningPlayer(-1),
-	GameTimer(30.0f)
+	GameTimer(30.0f),
+	RemainingTime(GameTimer)
 {
 
 }
@@ -14,7 +15,7 @@ void ANetGameState::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& 
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ANetGameState, WinningPlayer);
-	//DOREPLIFETIME(ANetGameState, GameTimer);
+	DOREPLIFETIME_CONDITION(ANetGameState, RemainingTime, COND_OwnerOnly);
 }
 
 void ANetGameState::OnRep_Winner()
@@ -42,4 +43,36 @@ ANetPlayerState* ANetGameState::GetPlayerStateByIndex(int PlayerIndex)
 	}
 
 	return nullptr;
+}
+
+void ANetGameState::StartGameTimer(bool PlayersReady, bool& TimeStarted)
+{
+	if (PlayersReady)
+	{
+		GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &ANetGameState::UpdateGameTimer, 1.0f, true);
+	}
+	TimeStarted = PlayersReady;
+}
+
+void ANetGameState::UpdateGameTimer()
+{
+	if (RemainingTime >= 0)
+	{
+		RemainingTime -= 1.0f;
+	}
+	CheckGameResult();
+	UpdateTimerDisplay();
+}
+
+void ANetGameState::CheckGameResult()
+{
+	if (WinningPlayer >= 0)
+	{
+		return;
+	}
+}
+
+void ANetGameState::OnRep_RemainingTime()
+{
+	UpdateTimerDisplay();
 }

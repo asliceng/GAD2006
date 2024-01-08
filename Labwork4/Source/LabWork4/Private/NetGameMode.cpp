@@ -16,13 +16,6 @@ ANetGameMode::ANetGameMode()
 	GameStateClass = ANetGameState::StaticClass();
 }
 
-void ANetGameMode::BeginPlay()
-{
-	Super::BeginPlay();
-
-	StartGameTimer();
-}
-
 AActor* ANetGameMode::ChoosePlayerStart_Implementation(AController* Player)
 {
 	AActor* Start = AssignTeamAndPlayerStart(Player);
@@ -95,48 +88,6 @@ void ANetGameMode::EndGame()
 
 	ANetGameState* GState = GetGameState<ANetGameState>();
 	GState->TriggerRestart();
-}
-
-void ANetGameMode::StartGameTimer()
-{
-	GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &ANetGameMode::UpdateGameTimer, 1.0f, true);
-}
-
-void ANetGameMode::UpdateGameTimer()
-{
-	ANetGameState* GState = GetGameState<ANetGameState>();
-
-	if (GState == nullptr)
-	{
-		return;
-	}
-
-	if (GState->GameTimer >= 0 )
-	{		
-		GState->GameTimer -= 1.0f;
-		FString TimerText = FString::Printf(TEXT("Remaining Time: %.1f seconds"), GState->GameTimer);
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::White, TimerText);
-	}
-	else
-	{
-		CheckGameResult();
-	}
-	/*UpdateTimerDisplay(GState->GameTimer);*/
-}
-
-void ANetGameMode::UpdateTimerDisplay(float RemainingTime)
-{
-	/*FString TimerText = FString::Printf(TEXT("Remaining Time: %.1f seconds"), RemainingTime);*/
-}
-
-void ANetGameMode::CheckGameResult()
-{
-	ANetGameState* GState = GetGameState<ANetGameState>();
-
-	if (GState == nullptr || GState->WinningPlayer >= 0)
-	{
-		return;
-	}
 }
 
 AActor* ANetGameMode::GetPlayerStart(FString Name, int Index)

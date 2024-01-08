@@ -41,4 +41,22 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	float GameTimer;
 
+	FTimerHandle TimerHandle_GameTimer;
+
+	UFUNCTION(BlueprintCallable)
+	void StartGameTimer(bool PlayersReady, bool& TimeStarted);
+
+	void UpdateGameTimer();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateTimerDisplay();
+
+	void CheckGameResult();
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_RemainingTime)
+	float RemainingTime;
+
+	UFUNCTION()
+	void OnRep_RemainingTime();
+
 };
