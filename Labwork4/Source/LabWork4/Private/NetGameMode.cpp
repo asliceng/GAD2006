@@ -71,6 +71,26 @@ void ANetGameMode::AvatarsOverlapped(ANetAvatar* AvatarA, ANetAvatar* AvatarB)
 
 }
 
+void ANetGameMode::TimeIsOver()
+{
+	for (APlayerController* Player : AllPlayers)
+	{
+		auto State = Player->GetPlayerState<ANetPlayerState>();
+
+		if (State->TeamID == EPlayerTeam::TEAM_Blue)
+		{
+			State->Result = EGameResults::RESULT_Won;
+		}
+		else
+		{
+			State->Result = EGameResults::RESULT_Lost;
+		}
+	}
+
+	FTimerHandle EndGameTimerHandle;
+	GWorld->GetTimerManager().SetTimer(EndGameTimerHandle, this, &ANetGameMode::EndGame, 2.5f, false);
+}
+
 void ANetGameMode::EndGame()
 {
 	PlayerStartIndex = 0;

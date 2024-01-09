@@ -1,11 +1,13 @@
 #include "NetGameState.h"
 #include "NetPlayerState.h"
+#include "NetGameMode.h"
 #include "NetBaseCharacter.h"
 #include "Net/UnrealNetwork.h"
 
+
 ANetGameState::ANetGameState() :
 	WinningPlayer(-1),
-	GameTimer(30.0f),
+	GameTimer(10.0f),
 	RemainingTime(GameTimer)
 {
 
@@ -45,32 +47,35 @@ ANetPlayerState* ANetGameState::GetPlayerStateByIndex(int PlayerIndex)
 	return nullptr;
 }
 
-void ANetGameState::StartGameTimer(bool PlayersReady, bool& TimeStarted)
-{
-	if (PlayersReady)
-	{
-		GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &ANetGameState::UpdateGameTimer, 1.0f, true);
-	}
-	TimeStarted = PlayersReady;
+void ANetGameState::StartGameTimer()
+{	
+	GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &ANetGameState::UpdateGameTimer, 1.0f, true);
 }
 
 void ANetGameState::UpdateGameTimer()
 {
-	if (RemainingTime >= 0)
+	if (RemainingTime > 0)
 	{
 		RemainingTime -= 1.0f;
+		UpdateTimerDisplay();
 	}
-	CheckGameResult();
-	UpdateTimerDisplay();
+	else
+	{
+		GetWorldTimerManager().ClearTimer(TimerHandle_GameTimer);
+		WinningPlayer = 0;
+		OnRep_Winner();
+
+	/*	ANetGameMode* GMode = Cast<ANetGameMode>(GetWorld()->GetAuthGameMode());
+		GMode->TimeIsOver();*/
+	}
 }
 
-void ANetGameState::CheckGameResult()
+void ANetGameState::RestartGameTimer()
 {
-	if (WinningPlayer >= 0)
-	{
-		return;
-	}
+	RemainingTime = GameTimer;
+	GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &ANetGameState::UpdateGameTimer, 1.0f, true);
 }
+
 
 void ANetGameState::OnRep_RemainingTime()
 {

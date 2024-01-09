@@ -7,6 +7,8 @@
 #include "NetGameState.generated.h"
 
 class ANetPlayerState;
+class ANetGameMode;
+
 
 /**
  *
@@ -44,14 +46,14 @@ public:
 	FTimerHandle TimerHandle_GameTimer;
 
 	UFUNCTION(BlueprintCallable)
-	void StartGameTimer(bool PlayersReady, bool& TimeStarted);
+	void StartGameTimer();
 
 	void UpdateGameTimer();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateTimerDisplay();
 
-	void CheckGameResult();
+	void RestartGameTimer();
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_RemainingTime)
 	float RemainingTime;
