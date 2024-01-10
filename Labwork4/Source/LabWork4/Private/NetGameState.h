@@ -53,12 +53,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateTimerDisplay();
 
-	void RestartGameTimer();
-
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_RemainingTime)
 	float RemainingTime;
 
 	UFUNCTION()
 	void OnRep_RemainingTime();
-
 };

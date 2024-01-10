@@ -24,8 +24,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AvatarsOverlapped(ANetAvatar* AvatarA, ANetAvatar* AvatarB);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(NetMulticast, Reliable)
 	void TimeIsOver();
+
+	UFUNCTION()
+	void SetWinningAvatar(ANetAvatar* AAvatar, ANetAvatar* BAvatar, bool bRedWon);
 
 	UFUNCTION(BlueprintCallable)
 	void EndGame();

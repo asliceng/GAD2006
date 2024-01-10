@@ -7,7 +7,7 @@
 
 ANetGameState::ANetGameState() :
 	WinningPlayer(-1),
-	GameTimer(10.0f),
+	GameTimer(25.0f),
 	RemainingTime(GameTimer)
 {
 
@@ -49,35 +49,30 @@ ANetPlayerState* ANetGameState::GetPlayerStateByIndex(int PlayerIndex)
 
 void ANetGameState::StartGameTimer()
 {	
+	RemainingTime = GameTimer;
 	GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &ANetGameState::UpdateGameTimer, 1.0f, true);
 }
 
 void ANetGameState::UpdateGameTimer()
 {
+	UpdateTimerDisplay();
+
 	if (RemainingTime > 0)
 	{
 		RemainingTime -= 1.0f;
-		UpdateTimerDisplay();
 	}
 	else
 	{
-		GetWorldTimerManager().ClearTimer(TimerHandle_GameTimer);
-		WinningPlayer = 0;
-		OnRep_Winner();
-
-	/*	ANetGameMode* GMode = Cast<ANetGameMode>(GetWorld()->GetAuthGameMode());
-		GMode->TimeIsOver();*/
+		ANetGameMode* GMode = Cast<ANetGameMode>(GetWorld()->GetAuthGameMode());
+		if (GMode)
+		{
+			GMode->TimeIsOver();
+		}
 	}
 }
-
-void ANetGameState::RestartGameTimer()
-{
-	RemainingTime = GameTimer;
-	GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &ANetGameState::UpdateGameTimer, 1.0f, true);
-}
-
 
 void ANetGameState::OnRep_RemainingTime()
 {
 	UpdateTimerDisplay();
 }
+
