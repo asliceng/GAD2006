@@ -39,7 +39,6 @@ void ANetGameMode::AvatarsOverlapped(ANetAvatar* AvatarA, ANetAvatar* AvatarB)
 
 void ANetGameMode::TimeIsOver_Implementation()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("IMPLEMENTATION"));
 	ANetAvatar* AvatarA = nullptr;
 	ANetAvatar* AvatarB = nullptr;
 
@@ -237,9 +236,6 @@ AActor* ANetGameMode::AssignTeamAndPlayerStart(AController* Player)
 
 				if (PreviousResult == EGameResults::RESULT_Won)
 				{
-					FString NumberString = FString::Printf(TEXT("Previous winner: %s, Team: %d"), *Player->GetHumanReadableName(), static_cast<int32>(NetPlayerState->TeamID));
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, NumberString);
-
 					if (NetPlayerState->TeamID == EPlayerTeam::TEAM_Red)
 					{
 						State->TeamID = EPlayerTeam::TEAM_Blue;
@@ -253,9 +249,6 @@ AActor* ANetGameMode::AssignTeamAndPlayerStart(AController* Player)
 				}
 				else if(PreviousResult == EGameResults::RESULT_Lost)
 				{
-					FString NumberString = FString::Printf(TEXT("Previous loser: %s, Team: %d"), *Player->GetHumanReadableName(), static_cast<int32>(NetPlayerState->TeamID));
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, NumberString);
-
 					if (NetPlayerState->TeamID == EPlayerTeam::TEAM_Red)
 					{
 						State->TeamID = EPlayerTeam::TEAM_Blue;

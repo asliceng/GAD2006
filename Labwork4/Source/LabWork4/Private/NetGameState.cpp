@@ -7,7 +7,7 @@
 
 ANetGameState::ANetGameState() :
 	WinningPlayer(-1),
-	GameTimer(25.0f),
+	GameTimer(30.0f),
 	RemainingTime(GameTimer)
 {
 
