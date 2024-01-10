@@ -83,7 +83,7 @@ void ANetGameMode::SetWinningAvatar(ANetAvatar* AAvatar, ANetAvatar* BAvatar, bo
 		return;
 	}
 
-	GetWorldTimerManager().ClearTimer(GState->TimerHandle_GameTimer);
+	GState->StopGameTimer();
 
 	ANetPlayerState* StateA = AAvatar->GetPlayerState<ANetPlayerState>();
 	ANetPlayerState* StateB = BAvatar->GetPlayerState<ANetPlayerState>();

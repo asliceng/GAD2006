@@ -53,6 +53,11 @@ void ANetGameState::StartGameTimer()
 	GetWorldTimerManager().SetTimer(TimerHandle_GameTimer, this, &ANetGameState::UpdateGameTimer, 1.0f, true);
 }
 
+void ANetGameState::StopGameTimer_Implementation()
+{
+	GetWorldTimerManager().ClearTimer(TimerHandle_GameTimer);
+}
+
 void ANetGameState::UpdateGameTimer()
 {
 	UpdateTimerDisplay();

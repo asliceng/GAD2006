@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "NetGameInstance.h"
 #include "Runtime/Engine/Classes/Engine/DataTable.h"
+#include "Components/TextRenderComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "NetBaseCharacter.generated.h"
 
@@ -79,6 +80,9 @@ public:
 
     UPROPERTY()
     FText PartNickName;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    UTextRenderComponent* TextAvatarNickname;
 
     UPROPERTY()
     USkeletalMeshComponent* PartFace;

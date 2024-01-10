@@ -48,6 +48,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartGameTimer();
 
+	UFUNCTION(NetMulticast, Reliable)
+	void StopGameTimer();
+
 	void UpdateGameTimer();
 
 	UFUNCTION(BlueprintImplementableEvent)

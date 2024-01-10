@@ -5,8 +5,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 
 ANetAvatar::ANetAvatar():
-	RunningSpeed(6000.0f),
-	WalkingSpeed(30.0f),
+	RunningSpeed(600.0f),
+	WalkingSpeed(300.0f),
 	bIsRunning(false),
 	MovementScale(1.0f)
 {

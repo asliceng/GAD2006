@@ -51,6 +51,9 @@ ANetBaseCharacter::ANetBaseCharacter()
 	PartEyes->SetupAttachment(PartFace, FName("headSocket"));
 	PartEyes->SetStaticMesh(SK_Eyes.Object);
 
+	TextAvatarNickname = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TextAvatarNickname"));
+	TextAvatarNickname->SetupAttachment(GetRootComponent());
+
 	static ConstructorHelpers::FObjectFinder<UDataTable> DT_BodyParts(TEXT("DataTable'/Game/Blueprints/DT_BodyParts.DT_BodyParts'"));
 	SBodyParts = DT_BodyParts.Object;
 }
@@ -180,6 +183,8 @@ void ANetBaseCharacter::CheckPlayerInfo()
 		UpdateBodyParts();
 		OnPlayerInfoChanged();
 		SetActorHiddenInGame(false);
+		FText NicknameText = FText::FromString(State->Data.Nickname);
+		TextAvatarNickname->SetText(NicknameText);
 	}
 	else
 	{
@@ -195,14 +200,9 @@ void ANetBaseCharacter::SubmitPlayerInfoToServer_Implementation(FSPlayerInfo Inf
 	State->Data.Nickname = Info.Nickname;
 	State->Data.CustomizationData = Info.CustomizationData;
 	State->Data.TeamID = State->TeamID;
+	
 	PlayerInfoReceived = true;
 }
-
-//void ANetBaseCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
-//{
-//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-//	DOREPLIFETIME(ANetBaseCharacter, PartSelection);
-//}
 
 FSMeshAssetList* ANetBaseCharacter::GetBodyPartList(EBodyPart part, bool isFemale)
 {
