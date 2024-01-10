@@ -75,7 +75,6 @@ void ANetGameMode::TimeIsOver_Implementation()
 
 void ANetGameMode::SetWinningAvatar(ANetAvatar* AAvatar, ANetAvatar* BAvatar, bool bRedWon)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("girdi"));
 	ANetGameState* GState = GetGameState<ANetGameState>();
 	if (GState == nullptr || GState->WinningPlayer >= 0)
 	{
